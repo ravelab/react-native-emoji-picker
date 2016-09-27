@@ -36,11 +36,11 @@ require('string.fromcodepoint');
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint
 const charFromUtf16 = utf16 => String.fromCodePoint(...utf16.split('-').map(u => '0x' + u))
 const charFromEmojiObj = obj => charFromUtf16(obj.unified)
-const blacklistedEmojis = ['white_frowning_face', 'keycap_star', 'eject']
+const blacklistedEmojis = ['white_frowning_face', 'keycap_star', 'eject', 'middle_finger']
 
 const isAndroid = Platform.OS == 'android'
 const letterSpacing = 10
-const defaultEmojiSize = 30
+const defaultEmojiSize = 40
 const padding = 5
 const filteredEmojis = emoji.filter(e => isAndroid ? !!e.google : !includes(blacklistedEmojis, e.short_name))
 // sort emojis by 'sort_order' then group them into categories
@@ -48,7 +48,7 @@ const groupedAndSorted = groupBy(orderBy(filteredEmojis, 'sort_order'), 'categor
 // convert the emoji object to a character
 const emojisByCategory = mapValues(groupedAndSorted, group => group.map(charFromEmojiObj))
 
-const CATEGORIES = ['People', 'Nature', 'Foods', 'Activity', 'Places', 'Objects', 'Symbols', 'Flags']
+const CATEGORIES = ['People', 'Nature', 'Foods', 'Activity']
 
 
 class EmojiPicker extends Component {
@@ -68,7 +68,7 @@ class EmojiPicker extends Component {
 
   renderCategory(category) {
     return (
-      <EmojiCategory 
+      <EmojiCategory
         {...this.props}
         key={category}
         category={category}
@@ -110,14 +110,14 @@ class EmojiCategory extends Component {
      <View style={style.categoryOuter}>
         <Text style={[styles.headerText, this.props.headerStyle]}>{this.props.category}</Text>
         <View style={styles.categoryInner}>
-          {emojis.map(e => 
-            <Text style={style} 
-              key={e} 
+          {emojis.map(e =>
+            <Text style={style}
+              key={e}
               onPress={() => this.props.onEmojiSelected(e)}>
               {e}
             </Text>
           )}
-        </View>    
+        </View>
       </View>
     )
   }
@@ -126,7 +126,7 @@ class EmojiCategory extends Component {
 
 const ClearButon = props => {
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       onPress={() => props.onEmojiSelected(null)}>
       <Text style={[styles.clearButton, props.clearButtonStyle]}>
         {props.clearButtonText || 'Clear'}
@@ -181,7 +181,7 @@ let styles = StyleSheet.create({
   },
   categoryInner: {
     flex: 1,
-    flexWrap: 'wrap', 
+    flexWrap: 'wrap',
     flexDirection: 'column',
   },
   headerText: {
