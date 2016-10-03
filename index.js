@@ -106,6 +106,10 @@ class EmojiCategory extends Component {
       padding: padding,
     }
 
+    if (isAndroid) {
+      style.fontSize = size * 6 / 10
+    }
+
     return (
      <View style={style.categoryOuter}>
         <Text style={[styles.headerText, this.props.headerStyle]}>{this.props.category}</Text>
